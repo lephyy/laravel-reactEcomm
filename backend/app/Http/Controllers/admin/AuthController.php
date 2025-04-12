@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -52,9 +53,12 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         $credentials = $request->only('email', 'password');
-
-        if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $token = Auth::attempt($credentials);
+        if (!$token) {
+            return response()->json([
+                'status' => 'error',
+                'error' => 'Unauthorized'
+            ], 401);
         }
         $user = Auth::user();
         return response()->json([
@@ -80,7 +84,7 @@ class AuthController extends Controller
     try {
         $user = JWTAuth::parseToken()->authenticate();
         return response()->json(['user' => $user]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json(['error' => 'Invalid token: ' . $e->getMessage()], 401);
     }
     }
