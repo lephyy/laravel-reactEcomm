@@ -73,20 +73,12 @@ class AuthController extends Controller
     }
 
     // Get Authenticated User
-    public function me(Request $request)
+    public function me()
     {
-        $token = $request->bearerToken();
-
-    if (!$token) {
-        return response()->json(['error' => 'Token not found'], 400);
-    }
-
-    try {
-        $user = JWTAuth::parseToken()->authenticate();
-        return response()->json(['user' => $user]);
-    } catch (Exception $e) {
-        return response()->json(['error' => 'Invalid token: ' . $e->getMessage()], 401);
-    }
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::user(),
+        ]);
     }
 
     // Logout User
