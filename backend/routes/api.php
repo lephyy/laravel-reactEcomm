@@ -21,5 +21,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('categories', [CategoryController::class, 'store']);
     // Route::resource('categories',CategoryController::class);
 
+    Route::resource('brands',BrandController::class);
 });
-Route::resource('brands',BrandController::class);
