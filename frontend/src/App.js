@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import ShopCategory from './pages/ShopCategory';
 import ProductDetails from './pages/ProductDetails';
-import Login from './pages/Login';
+// import Login from './pages/Login';
 import Tracking from './pages/Tracking';
 import CheckOut from './pages/CheckOut';
 import Cart from './pages/Cart';
@@ -19,10 +19,10 @@ import Admin from "./admin/Admin";
 import Banner from "./admin/Banner";
 import Categories from "./admin/Categories";
 import Product from "./admin/Product";
+import Login from "./admin/Login";
 
-
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import AdminRoute from './admin/components/AdminRoute';
 
 
 
@@ -30,12 +30,12 @@ function App() {
   return (
     <CartProvider>
       <BrowserRouter>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/shopcategory' element={<ShopCategory />} />
           <Route path='/singleproduct/:id' element={<ProductDetails />} />
-          <Route path='/login' element={<Login />} />
+          {/* <Route path='/login' element={<Login />} /> */}
           <Route path='/tracking' element={<Tracking />} />
           <Route path='/checkout' element={<CheckOut />} />
           <Route path="/payment" element={<Payment />} />
@@ -49,12 +49,16 @@ function App() {
 
 
           {/* Admin */}
-          <Route path='/admin' element={<Admin />} />
-          <Route path='/admin/banner' element={<Banner />} />
-          <Route path='/admin/categories' element={<Categories />} />
-          <Route path='/admin/product' element={<Product />} />
+          <Route path='/login' element={<Login />} />
+          
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+
+          <Route path="/admin/banner" element={<AdminRoute><Banner /></AdminRoute>} />
+          <Route path="/admin/categories" element={<AdminRoute><Categories /></AdminRoute>} />
+          <Route path="/admin/product" element={<AdminRoute><Product /></AdminRoute>} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </CartProvider>
   );
 }

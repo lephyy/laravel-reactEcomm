@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 
 function Nav () {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/login');
+  };
     return(
         <>
           <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row default-layout-navbar">
@@ -31,6 +38,11 @@ function Nav () {
                 <li class="nav-item d-none d-lg-flex">
                   <a class="nav-link" href="#">
                     <span class="btn btn-primary">+ Create new</span>
+                  </a>
+                </li>
+                <li class="nav-item d-none d-lg-flex">
+                  <a class="nav-link" href="#">
+                    <span class="btn btn-danger" onClick={handleLogout}>Log out</span>
                   </a>
                 </li>
                 <li class="nav-item dropdown d-none d-lg-flex">
