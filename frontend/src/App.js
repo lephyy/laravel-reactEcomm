@@ -17,13 +17,19 @@ import Header from './components/Header';
 // Admin
 import Admin from "./admin/Admin";
 import Banner from "./admin/Banner";
-import Categories from "./admin/Categories";
+
 import Product from "./admin/Product";
 import Login from "./admin/Login";
 
 import { ToastContainer, toast } from 'react-toastify';
 import AdminRoute from './admin/components/AdminRoute';
 
+import {default as ShowCategories} from "./admin/category/Show";
+import {default as CreateCategory} from "./admin/category/Create";
+import {default as EditCategory} from "./admin/category/Edit";
+import {default as ShowBrands} from "./admin/brand/Show";
+import {default as CreateBrand} from "./admin/brand/Create";
+import {default as EditBrand} from "./admin/brand/Edit";
 
 
 function App() {
@@ -54,8 +60,18 @@ function App() {
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
 
           <Route path="/admin/banner" element={<AdminRoute><Banner /></AdminRoute>} />
-          <Route path="/admin/categories" element={<AdminRoute><Categories /></AdminRoute>} />
+          
           <Route path="/admin/product" element={<AdminRoute><Product /></AdminRoute>} />
+
+          <Route path="/admin/categories" element={<AdminRoute><ShowCategories /></AdminRoute>} />
+          <Route path="/admin/categories/create" element={<AdminRoute><CreateCategory /></AdminRoute>} />
+          <Route path="/admin/categories/edit/:id" element={<AdminRoute><EditCategory /></AdminRoute>} />
+
+          <Route path="/admin/brands" element={<AdminRoute><ShowBrands /></AdminRoute>} />
+          <Route path="/admin/brands/create" element={<AdminRoute><CreateBrand /></AdminRoute>} />
+          <Route path="/admin/brands/edit/:id" element={<AdminRoute><EditBrand /></AdminRoute>} />
+
+
         </Routes>
       </BrowserRouter>
       <ToastContainer />

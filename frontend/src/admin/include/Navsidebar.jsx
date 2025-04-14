@@ -23,15 +23,21 @@ function Navsidebar () {
             </Link>
           </li>
           <li class="nav-item">
-            <Link className="nav-link" to="/admin/banner">
-                <i class="fa-solid fa-pager menu-icon"></i>
-                <span class="menu-title">Banner</span>       
-            </Link>
-          </li>
-          <li class="nav-item">
             <Link className="nav-link" to="/admin/categories">
                 <i class="fa-solid fa-pager menu-icon"></i>
                 <span class="menu-title">Categories</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/brands">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Brands</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Banner</span>       
             </Link>
           </li>
           <li class="nav-item">
