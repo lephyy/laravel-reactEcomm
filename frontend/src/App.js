@@ -19,7 +19,7 @@ import Admin from "./admin/Admin";
 import Banner from "./admin/Banner";
 import Categories from "./admin/Categories";
 import Product from "./admin/Product";
-
+import {default as ShowCategories} from './admin/category/Show';
 
 
 
@@ -51,7 +51,9 @@ function App() {
           {/* Admin */}
           <Route path='/admin' element={<Admin />} />
           <Route path='/admin/banner' element={<Banner />} />
-          <Route path='/admin/categories' element={<Categories />} />
+          <Route path='/admin/categories' element={
+            <ShowCategories />
+          } />
           <Route path='/admin/product' element={<Product />} />
         </Routes>
       </BrowserRouter>

@@ -23,15 +23,21 @@ function Navsidebar () {
             </Link>
           </li>
           <li class="nav-item">
-            <Link className="nav-link" to="/admin/banner">
-                <i class="fa-solid fa-pager menu-icon"></i>
-                <span class="menu-title">Banner</span>       
-            </Link>
-          </li>
-          <li class="nav-item">
             <Link className="nav-link" to="/admin/categories">
                 <i class="fa-solid fa-pager menu-icon"></i>
                 <span class="menu-title">Categories</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Brands</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Banner</span>       
             </Link>
           </li>
           <li class="nav-item">
@@ -40,6 +46,37 @@ function Navsidebar () {
                 <span class="menu-title">Product</span>       
             </Link>
           </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Orders</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">User</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Shipping</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Change Password</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Logout</span>       
+            </Link>
+          </li>
+
         
         </ul>
       </nav>
