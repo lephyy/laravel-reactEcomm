@@ -7,11 +7,15 @@ export const apiUrl = 'http://127.0.0.1:8000/api'
 // }
 
 export const adminToken = () => {
-    const admin = localStorage.getItem('admin');
-    if (!admin) return null;
+    const user = localStorage.getItem('userInfo');
+    if (!user) return null;
 
     try {
-        return JSON.parse(admin).token;
+        const parsed = JSON.parse(user);
+        if (parsed.role === 'admin') {
+            return parsed.token;
+        }
+        return null;
     } catch (error) {
         return null;
     }
