@@ -14,12 +14,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
 
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::get('categories/{id}', [CategoryController::class, 'show']);
-    Route::post('categories/{id}',[CategoryController::class,'update']);
-    Route::delete('categories/{id}',[CategoryController::class,'destroy']);
-    Route::post('categories', [CategoryController::class, 'store']);
-    // Route::resource('categories',CategoryController::class);
-
+    Route::resource('categories',CategoryController::class);
     Route::resource('brands',BrandController::class);
 });
