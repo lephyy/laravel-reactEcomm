@@ -304,18 +304,18 @@ function Create ({ placeholder }) {
                                                     <label for="brandStatus" className="form-label">Featured</label>
                                                     <select 
                                                         {
-                                                            ...register('featured' , {
+                                                            ...register('is_featured' , {
                                                                 required : 'Please selete a featured'
                                                             })
                                                         }
-                                                        className={`form-control ${errors.featured && 'is-invalid'}`}  
+                                                        className={`form-control ${errors.is_featured && 'is-invalid'}`}  
                                                      >
                                                         <option value="1">Yes</option>
                                                         <option value="0">No</option>
                                                     </select>
                                                         {
-                                                            errors.featured && 
-                                                            <p className='invalid-feedback'>{errors.featured?.message}</p>
+                                                            errors.is_featured && 
+                                                            <p className='invalid-feedback'>{errors.is_featured?.message}</p>
                                                         }
                                                 </div> 
                                     
