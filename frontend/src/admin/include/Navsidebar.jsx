@@ -35,17 +35,43 @@ function Navsidebar () {
             </Link>
           </li>
           <li class="nav-item">
+            <Link className="nav-link" to="/admin/products">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Products</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
             <Link className="nav-link" to="/admin/banner">
                 <i class="fa-solid fa-pager menu-icon"></i>
                 <span class="menu-title">Banner</span>       
             </Link>
           </li>
           <li class="nav-item">
-            <Link className="nav-link" to="/admin/product">
+            <Link className="nav-link" to="/admin/banner">
                 <i class="fa-solid fa-pager menu-icon"></i>
-                <span class="menu-title">Product</span>       
+                <span class="menu-title">Orders</span>       
             </Link>
           </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Users</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Shipping</span>       
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link className="nav-link" to="/admin/banner">
+                <i class="fa-solid fa-pager menu-icon"></i>
+                <span class="menu-title">Change Password</span>       
+            </Link>
+          </li>
+          
+          
         
         </ul>
       </nav>

@@ -97,12 +97,11 @@ const Create = () => {
                                     
                                     <button 
                                         disabled={disable}
-                                        type="submit" class="btn btn-success">Create Brand</button>
+                                        type="submit" class="btn btn-success">Create Brand
+                                    </button>
                                 </form>
                                 
                             </div>
-                            
-
                         </div>
                     <Footer/>    
                     </div>
