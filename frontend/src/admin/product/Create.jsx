@@ -407,8 +407,9 @@ function Create ({ placeholder }) {
                                                         <div className='col-md-3' key={`image-${index}`}>
                                                             <div className='card shadow'>
                                                                 <img src={image} alt="" className='w-100' />
-                                                                <button className='btn btn-danger' onClick={() => deleteImage(image)}>Delete</button>
+                                                                
                                                             </div>
+                                                            <button className='btn btn-danger mt-3' onClick={() => deleteImage(image)}>Delete</button>
                                                         </div>
                                                     )
                                                 })
