@@ -16,6 +16,10 @@ function Create ({ placeholder }) {
     const [disable, setDisable] = useState(false)
     const [categories, setCategories] = useState([])
     const [brands, setBrands] = useState([])
+    const [gallery, SetGallery] = useState([])
+    const [galleryImages, setGalleryImages] = useState([])
+    const navigate = useNavigate();
+
 
 	const config = useMemo(() => ({
 			readonly: false, // all options from https://xdsoft.net/jodit/docs/,
@@ -26,7 +30,7 @@ function Create ({ placeholder }) {
 
 
 
-    const navigate = useNavigate();
+   
     const {
         register,
         handleSubmit,
@@ -36,7 +40,7 @@ function Create ({ placeholder }) {
       } = useForm();
 
     const saveProduct = async (data) => {
-        const FormData = {...data, "description": content}
+        const FormData = {...data, "description": content, "gallery": gallery}
                                   
         setDisable(true);
         console.log(data)
@@ -97,6 +101,75 @@ function Create ({ placeholder }) {
             
         })
     }
+
+    const handleFile = async (e) => {
+        const formData = new FormData();
+        const file = e.target.files[0];
+        formData.append("image",file);
+        setDisable(true)
+
+
+        const res = await fetch(`${apiUrl}/temp-image`,{
+            method: 'POST',
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : `Bearer  ${adminToken()}`
+            },
+            body: formData
+            
+        })
+        .then(res => res.json())
+        .then(result => {
+            gallery.push(result.path.id); 
+            SetGallery(gallery)
+
+            galleryImages.push(result.path.image_url);
+            setGalleryImages(galleryImages)
+            setDisable(false)
+            
+        })
+    }
+
+    const deleteImage = (image) => {
+        const newGallery = galleryImages.filter(gallery => gallery != image)
+        setGalleryImages(newGallery)
+    }
+
+    // const handleFile = async (e) => {
+    //     const formData = new FormData();
+    //     const file = e.target.files[0];
+    //     formData.append("image", file);
+    //     setDisable(true);
+    
+    //     try {
+    //         const res = await fetch(`${apiUrl}/temp-image`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Authorization': `Bearer ${adminToken()}`
+    //             },
+    //             body: formData
+    //         });
+            
+    //         const result = await res.json();
+            
+    //         // The ID is in result.path.id
+    //         if (result && result.path && result.path.id) {
+    //             const newGallery = [...gallery, result.path.id];
+    //             SetGallery(newGallery);
+    //             toast.success("Image uploaded successfully");
+    //         } else {
+    //             console.error("Invalid response format:", result);
+    //             toast.error("Failed to get image ID from response");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error uploading image:", error);
+    //         toast.error("Failed to upload image");
+    //     } finally {
+    //         setDisable(false);
+    //     }
+    // };
+
 
     useEffect(() => {
         fetchCategories();
@@ -318,11 +391,31 @@ function Create ({ placeholder }) {
                                                             <p className='invalid-feedback'>{errors.is_featured?.message}</p>
                                                         }
                                                 </div> 
+
                                     
                                     <h3 className='py-3 border-bottom mb-3'>Gallery</h3>
                                     <div className="mb-3">
                                         <label htmlFor="formFile" className="form-label">Image</label>
-                                        <input className="form-control" type="file"  />
+                                        <input 
+                                        onChange={handleFile}
+                                        className="form-control" type="file"  />
+                                    </div>
+                                    <div className='mb-3'>
+                                        <div className='row'>
+                                            {
+                                                galleryImages && galleryImages.map((image,index) => {
+                                                    return (
+                                                        <div className='col-md-3' key={`image-${index}`}>
+                                                            <div className='card shadow'>
+                                                                <img src={image} alt="" className='w-100' />
+                                                                <button className='btn btn-danger' onClick={() => deleteImage(image)}>Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            
+                                        </div>
                                     </div>
                                     <br />
                                     <button 
