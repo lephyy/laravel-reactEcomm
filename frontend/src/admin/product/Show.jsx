@@ -33,8 +33,33 @@ function Show () {
     }
 
 
-    const deleteProduct = async (id) => {
+    // const deleteProduct = async (id) => {
 
+    //     if(window.confirm("Are you sure you want to delete?")) {
+    //         const res = await fetch(`${apiUrl}/products/${id}`,{
+    //             method: 'DELETE',
+    //             headers: {
+    //                 'Content-type' : 'application/json',
+    //                 'Accept' : 'application/json',
+    //                 'Authorization' : `Bearer  ${adminToken()}`
+    //             }
+    //         })
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             if (result.status == 200) {
+    //                 const newProducts = products.filter(product => product.id != id)
+    //                 setProducts(newProducts);
+    //                 toast.success(result.message)
+    //             }else{
+    //                 console.log("Something went wrong");
+    //             }
+                
+    //         })
+    //     }
+    // }
+
+
+    const deleteProduct = async (id) => {
         if(window.confirm("Are you sure you want to delete?")) {
             const res = await fetch(`${apiUrl}/products/${id}`,{
                 method: 'DELETE',
@@ -42,24 +67,21 @@ function Show () {
                     'Content-type' : 'application/json',
                     'Accept' : 'application/json',
                     'Authorization' : `Bearer  ${adminToken()}`
-                }
-            })
-            .then(res => res.json())
+                },
+                
+            }).then(res => res.json())
             .then(result => {
                 if (result.status == 200) {
                     const newProducts = products.filter(product => product.id != id)
-                    setProducts(newProducts);
+                    setProducts(newProducts)
                     toast.success(result.message)
-                }else{
-                    console.log("Something went wrong");
+                } else {
+                    toast.error(result.message)
                 }
                 
             })
-        }
+        }     
     }
-
-
-
 
     useEffect(() => {
         fetchProducts();
@@ -117,7 +139,7 @@ function Show () {
                                                             </td>
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    <Link to={`/admin/brands/edit/${product.id}`}>
+                                                                    <Link to={`/admin/products/edit/${product.id}`}>
                                                                         <button class="btn btn-sm btn-primary mr-2">
                                                                             <i class="bi bi-pencil"></i>
                                                                         </button>
