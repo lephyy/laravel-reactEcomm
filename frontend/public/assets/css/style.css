@@ -2856,7 +2856,7 @@ ul {
   border-radius: 5px;
   margin-bottom: 20px;
   transition: 0.5s;
-  height: 320px; /* Set consistent height */
+  height: 450px; /* Set consistent height */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Space out text and image */
@@ -2864,7 +2864,7 @@ ul {
 }
 
 .single_product_item img {
-  max-height: 150px; /* Maintain consistent image height */
+  max-height: 300px; /* Maintain consistent image height */
   width: auto; /* Scale proportionally */
   object-fit: contain; /* Prevent cropping */
   margin: 10px auto;
@@ -2905,7 +2905,7 @@ ul {
   float: right;
   font-size: 14px;
   line-height: 26px;
-  color: #000;
+  color: #ff3368;
 }
 
 .single_product_item:hover {

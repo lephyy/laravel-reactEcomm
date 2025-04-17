@@ -1,59 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Banner from '../components/Banner'
 import Footer from '../components/Footer'
+import Featured from '../components/Featured'
+import {apiUrl} from '../admin/http'
 
 function Home() {
+
+    const [products, setProducts] = useState([]);
+
+    const latestProducts = async () => {
+        await fetch(apiUrl+'/get-latest-products',{
+            method: 'GET' ,
+            headers: {
+                'Content-type' : 'application/json',
+                'Accept' : 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(result => {
+            setProducts(result.data)
+            console.log(result)
+        });
+    }
+
+    useEffect(() => {
+        latestProducts();
+    },[])
+
   return (
     <>
         <Header/>
         <Banner />
+        <Featured />
         {/* feature_part start*/}
-        <section className="feature_part padding_top">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-lg-8">
-                        <div className="section_tittle text-center">
-                            <h2>Featured Category</h2>
-                        </div>
-                    </div>
-                </div>
-                <div className="row align-items-center justify-content-between">
-                    <div className="col-lg-7 col-sm-6">
-                        <div className="single_feature_post_text">
-                            <p>Premium Quality</p>
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_1.png" alt=""/>
-                        </div>
-                    </div>
-                    <div className="col-lg-5 col-sm-6">
-                        <div className="single_feature_post_text">
-                            <p>Premium Quality</p>
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_2.png" alt=""/>
-                        </div>
-                    </div>
-                    <div className="col-lg-5 col-sm-6">
-                        <div className="single_feature_post_text">
-                            <p>Premium Quality</p>
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_3.png" alt=""/>
-                        </div>
-                    </div>
-                    <div className="col-lg-7 col-sm-6">
-                        <div className="single_feature_post_text">
-                            <p>Premium Quality</p>
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_4.png" alt=""/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
         {/* upcoming_event part start*/}
 
         {/* product_list start*/}
@@ -62,186 +43,33 @@ function Home() {
                 <div className="row justify-content-center">
                     <div className="col-lg-12">
                         <div className="section_tittle text-center">
-                            <h2>awesome <span>shop</span></h2>
+                            <h2>Latest <span>shop</span></h2>
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="product_list_slider owl-carousel">
-                            <div className="single_product_list_slider">
-                                <div className="row align-items-center justify-content-between">
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_1.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_2.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_3.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_4.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_5.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_6.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_7.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_8.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="single_product_list_slider">
-                                <div className="row align-items-center justify-content-between">
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_1.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_2.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_3.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_4.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_5.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_6.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_7.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-sm-6">
-                                        <div className="single_product_item">
-                                            <img src="assets/img/product/product_8.png" alt=""/>
-                                            <div className="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
-                                                <h3>$150.00</h3>
-                                                <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            
+                    <div className="row align-items-center latest_product_inner">
+                                    {
+                                        products && products.map(product => {
+                                            return (
+                                                <div className="col-lg-3 col-sm-6"key={`product-${product.id}`} >
+                                                    <div className="single_product_item">
+                                                        <img src={product.image_url} alt="" className='w-400'/>
+                                                        <div className="single_product_text">
+                                                            <h4>{product.title}</h4>
+                                                            <h3>${product.price}</h3>
+                                                            <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
                     </div>
-                </div>
+               
             </div>
         </section>
+        
         {/* product_list part start*/}
 
         {/* awesome_shop start*/}
