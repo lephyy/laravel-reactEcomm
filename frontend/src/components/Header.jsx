@@ -25,16 +25,10 @@ function Header() {
                                                 Home
                                             </Link>
                                         </li>
-                                        <li className="nav-item dropdown">
-                                            <a className="nav-link dropdown-toggle" id="navbarDropdown_1"
-                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Shop
-                                            </a>
-                                            <div className="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                                <Link className="dropdown-item" to="/shopcategory">Shop Category</Link>
-                                                {/* <Link className="dropdown-item" to="/singleproduct">Product Details</Link> */}
-                                            </div>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/shopcategory">Shop</Link>
                                         </li>
+                                        
                                         <li className="nav-item dropdown">
                                             <a className="nav-link dropdown-toggle" id="navbarDropdown_3"
                                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
