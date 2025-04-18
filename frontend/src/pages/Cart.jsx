@@ -8,8 +8,8 @@ const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // Calculate subtotal
-  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  // Calculate subtotal - ensure price is treated as a number
+  const subtotal = cart.reduce((total, item) => total + (Number(item.price) * item.quantity), 0);
 
   if (cart.length === 0) {
     return (
@@ -24,7 +24,7 @@ const Cart = () => {
   return (
     <>
       <Header />
-      {/*================Cart Area =================*/}
+      
       <section className="cart_area padding_top">
         <div className="container">
           <div className="cart_inner">
@@ -36,6 +36,7 @@ const Cart = () => {
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -44,7 +45,7 @@ const Cart = () => {
                       <td>
                         <div className="media">
                           <div className="d-flex">
-                            <img src={item.image} alt={item.title} style={{ width: "100px" }} />
+                            <img src={item.image_url || item.image} alt={item.title} style={{ width: "100px", height: "100px" }} />
                           </div>
                           <div className="media-body">
                             <p>{item.title}</p>
@@ -52,7 +53,7 @@ const Cart = () => {
                         </div>
                       </td>
                       <td>
-                        <h5>${item.price.toFixed(2)}</h5>
+                        <h5>${Number(item.price).toFixed(2)}</h5>
                       </td>
                       <td>
                         <div className="product_count d-flex align-items-center">
@@ -75,12 +76,12 @@ const Cart = () => {
                         </div>
                       </td>
                       <td>
-                        <h5>${(item.price * item.quantity).toFixed(2)}</h5>
+                        <h5>${(Number(item.price) * item.quantity).toFixed(2)}</h5>
                       </td>
                       <td>
                         <button
                           className="btn btn-danger"
-                          onClick={() => removeFromCart(item.id)} // Call removeFromCart with the item ID
+                          onClick={() => removeFromCart(item.id)}
                         >
                           Remove
                         </button>
@@ -99,6 +100,7 @@ const Cart = () => {
                     <td>
                       <h5>${subtotal.toFixed(2)}</h5>
                     </td>
+                    <td></td>
                   </tr>
                 </tfoot>
               </table>
@@ -117,7 +119,7 @@ const Cart = () => {
           </div>
         </div>
       </section>
-      {/*================End Cart Area =================*/}
+     
       <Footer />
     </>
   );

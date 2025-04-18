@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {apiUrl} from '../admin/http'
+import { Link } from 'react-router-dom';
 
 function Featured() {
 
@@ -40,32 +41,40 @@ function Featured() {
                         <div className="single_feature_post_text">
                             
                             {/* <p>Premium Quality</p> */}
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            <h3>Accessories</h3>
+                            <Link  to="/shopcategory">
+                                <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            </Link>
                             <img src="assets/img/cate-1.png" alt="" className=' h-100'/>
                         </div>
                     </div>
                     <div className="col-lg-5 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
+                            <h3>Blind Boxes</h3>
+                            <Link  to="/shopcategory">
+                                <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            </Link>
                             <img src="assets/img/cate-2.png" alt="" className='w-50 h-80'/>
                         </div>
                     </div>
                     <div className="col-lg-5 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
+                            <h3>Figurine</h3>
+                            <Link  to="/shopcategory">
+                                <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            </Link>
                             <img src="assets/img/cate-3.png" className=' w-50' alt=""/>
                         </div>
                     </div>
                     <div className="col-lg-7 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            <h3>Best Selling</h3>
+                            <Link  to="/shopcategory">
+                                <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            </Link>
                             <img src="assets/img/cate-4.png" className=' h-100' alt=""/>
                         </div>
                     </div>
