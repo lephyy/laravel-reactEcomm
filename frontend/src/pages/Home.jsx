@@ -4,6 +4,7 @@ import Banner from '../components/Banner'
 import Footer from '../components/Footer'
 import Featured from '../components/Featured'
 import {apiUrl} from '../admin/http'
+import { Link } from 'react-router-dom'
 
 function Home() {
 
@@ -53,14 +54,16 @@ function Home() {
                                         products && products.map(product => {
                                             return (
                                                 <div className="col-lg-3 col-sm-6"key={`product-${product.id}`} >
+                                                    <Link to={`/product/${product.id}`} style={{  textDecoration: 'none' }}>
                                                     <div className="single_product_item">
                                                         <img src={product.image_url} alt="" className='w-400'/>
-                                                        <div className="single_product_text">
+                                                        <div className="single_product_text" style={{ color: 'black' }}>
                                                             <h4>{product.title}</h4>
                                                             <h3>${product.price}</h3>
-                                                            <a href="#" className="add_cart">+ add to cart<i className="ti-heart"></i></a>
+                                                            <a href="#" className="add_cart" style={{  textDecoration: 'none' }}>+ add to cart<i className="ti-heart"></i></a>
                                                         </div>
                                                     </div>
+                                                    </Link>
                                                 </div>
                                             )
                                         })
@@ -77,8 +80,8 @@ function Home() {
             <div className="container">
                 <div className="row align-items-center justify-content-between">
                     <div className="col-lg-6 col-md-6">
-                        <div className="offer_img">
-                            <img src="assets/img/offer_img.png" alt=""/>
+                        <div className="offer_img ">
+                            <img src="assets/img/time.png" style={{width:'400px'}} alt=""/>
                         </div>
                     </div>
                     <div className="col-lg-6 col-md-6">
@@ -107,60 +110,7 @@ function Home() {
         </section>
         {/* awesome_shop part start*/}
 
-        {/* product_list part start*/}
-        <section className="product_list best_seller section_padding">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-lg-12">
-                        <div className="section_tittle text-center">
-                            <h2>Best Sellers <span>shop</span></h2>
-                        </div>
-                    </div>
-                </div>
-                <div className="row align-items-center justify-content-between">
-                    <div className="col-lg-12">
-                        <div className="best_product_slider owl-carousel">
-                            <div className="single_product_item">
-                                <img src="assets/img/product/product_1.png" alt=""/>
-                                <div className="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                </div>
-                            </div>
-                            <div className="single_product_item">
-                                <img src="assets/img/product/product_2.png" alt=""/>
-                                <div className="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                </div>
-                            </div>
-                            <div className="single_product_item">
-                                <img src="assets/img/product/product_3.png" alt=""/>
-                                <div className="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                </div>
-                            </div>
-                            <div className="single_product_item">
-                                <img src="assets/img/product/product_4.png" alt=""/>
-                                <div className="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                </div>
-                            </div>
-                            <div className="single_product_item">
-                                <img src="assets/img/product/product_5.png" alt=""/>
-                                <div className="single_product_text">
-                                    <h4>Quartz Belt Watch</h4>
-                                    <h3>$150.00</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        {/* product_list part end*/}
+        
 
         {/* subscribe_area part start*/}
         <section className="subscribe_area section_padding">

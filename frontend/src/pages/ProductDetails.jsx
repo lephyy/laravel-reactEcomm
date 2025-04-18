@@ -1,60 +1,56 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CartProvider, CartContext } from '../components/CartContext';
+import { apiUrl } from '../admin/http';
+
+
 function ProductDetails() {
-    const { id } = useParams();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [quantity, setQuantity] = useState(1);
-    const { addToCart, updateQuantity } = useContext(CartContext);
-    const [showMessage, setShowMessage] = useState(false);
+    
+    const [productImages, setProductImages] = useState([])
+    const [product, setProduct] = useState([])
+    const params = useParams();
+
+    const fetchProduct = () => {
+            fetch(`${apiUrl}/get-product/${params.id}`,{
+                method: 'GET',
+                headers: {
+                    'Content-type' : 'application/json',
+                    'Accept' : 'application/json',
+                }
+            })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result)
+                if (result.status == 200){
+                    setProduct(result.data)
+                    setProductImages(result.data.product_images)
+                } else {
+                    console.log("something wenr wrong");
+                }           
+            })
+        }
 
     useEffect(() => {
-        async function fetchProductData() {
-            try {
-                const { data } = await axios.get(`https://fakestoreapi.com/products/${id}`);
-                setProduct(data);
-                setLoading(false);
-            } catch (error) {
-                setError("Error fetching product details");
-                setLoading(false);
-            }
-        }
-        fetchProductData();
-    }, [id]);
-    const handleIncrement = () => {
-        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, 10)); // Max 10
-    };
-
-    // Decrement quantity
-    const handleDecrement = () => {
-        setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1)); // Min 1
-    };
-    const handleAddToCart = () => {
-        addToCart({ ...product, quantity });
-        setShowMessage(true);
-        setTimeout(() => setShowMessage(false), 2000); // Hide message after 2 seconds
-    };
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-    if (!product) return <div>Product not found</div>;
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-    if (!product) return <div>Product not found</div>;
+        fetchProduct()
+    },[])
+    
     return (
         <>
+            <Header />
             {/*================Single Product Area =================*/}
             <div className="product_image_area section_padding">
+            <Link  to="/shopcategory">
+                <button className="btn_3 mb-4 ml-4 py-2 "><i class="fa-solid fa-arrow-left mr-3"></i>Back</button>
+            </Link>
                 <div className="container">
                     <div className="row s_product_inner justify-content-between">
                         <div className="col-lg-7 col-xl-7">
                             <div className="product_slider_img">
                                 <div id="vertical">
-                                    <img src={product.image} alt={product.title} className="img-fluid" />
+                                    <img src={product.image_url} alt={product.title} className="img-fluid" />
                                 </div>
                             </div>
                         </div>
@@ -73,59 +69,43 @@ function ProductDetails() {
                                     </li>
                                 </ul>
                                 <p>
-                                    {product.description}
+                                    {product.short_description}
+                                </p>
+                                <p>
+                                    {product.sku}
                                 </p>
                                 <div className="card_area d-flex justify-content-between align-items-center">
-                                    <div className="product_count">
-                                        <button
-                                            className="inumber-decrement"
-                                            onClick={handleDecrement}
-                                        >
-                                            <i className="ti-minus"></i>
-                                        </button>
-                                        <input
-                                            className="input-number"
-                                            type="text"
-                                            value={quantity}
-                                            readOnly
-                                        />
-                                        <button
-                                            className="number-increment"
-                                            onClick={handleIncrement}
-                                        >
-                                            <i className="ti-plus"></i>
-                                        </button>
-                                    </div>
+                                    
                                     <button
                                         className="btn_3"
-                                        onClick={handleAddToCart}
+                                       
                                     >
                                         Add to Cart
                                     </button>
                                     <a href="#" className="like_us"> <i className="ti-heart"></i> </a>
-                                    {showMessage && (
-                                        <div
-                                            style={{
-                                                position: "fixed",
-                                                top: "50%",
-                                                left: "50%",
-                                                transform: "translate(-50%, -50%)",
-                                                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                                                color: "white",
-                                                padding: "20px 40px",
-                                                borderRadius: "8px",
-                                                zIndex: 1000,
-                                                textAlign: "center",
-                                            }}
-                                        >
-                                            Added to shopping cart successfully!
-                                        </div>
-                                    )}
+                                    
                                 </div>
 
                             </div>
                         </div>
                     </div>
+                   {/* <div className='row my-3 ml-3'>
+                   {
+                        productImages && productImages.map(product_images => {
+                            return(
+                                
+                                    <div className='content'>
+                                        <img 
+                                            src={product_images.image_url}
+                                            className='w-100, h-100'
+                                            alt="" 
+                                        />
+                                    </div>
+                            )
+                        })
+                    }
+                   </div> */}
+                   
                 </div>
             </div>
 
@@ -545,60 +525,6 @@ function ProductDetails() {
             </section>
             {/*================End Product Description Area =================*/}
 
-            {/* product_list part start*/}
-            <section className="product_list best_seller">
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-lg-12">
-                            <div className="section_tittle text-center">
-                                <h2>Best Sellers <span>shop</span></h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row align-items-center justify-content-between">
-                        <div className="col-lg-12">
-                            <div className="best_product_slider owl-carousel">
-                                <div className="single_product_item">
-                                    <img src="img/product/product_1.png" alt="" />
-                                    <div className="single_product_text">
-                                        <h4>Quartz Belt Watch</h4>
-                                        <h3>$150.00</h3>
-                                    </div>
-                                </div>
-                                <div className="single_product_item">
-                                    <img src="img/product/product_2.png" alt="" />
-                                    <div className="single_product_text">
-                                        <h4>Quartz Belt Watch</h4>
-                                        <h3>$150.00</h3>
-                                    </div>
-                                </div>
-                                <div className="single_product_item">
-                                    <img src="img/product/product_3.png" alt="" />
-                                    <div className="single_product_text">
-                                        <h4>Quartz Belt Watch</h4>
-                                        <h3>$150.00</h3>
-                                    </div>
-                                </div>
-                                <div className="single_product_item">
-                                    <img src="img/product/product_4.png" alt="" />
-                                    <div className="single_product_text">
-                                        <h4>Quartz Belt Watch</h4>
-                                        <h3>$150.00</h3>
-                                    </div>
-                                </div>
-                                <div className="single_product_item">
-                                    <img src="img/product/product_5.png" alt="" />
-                                    <div className="single_product_text">
-                                        <h4>Quartz Belt Watch</h4>
-                                        <h3>$150.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {/* product_list part end*/}
             <Footer />
         </>
     )

@@ -2,27 +2,127 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-function ShopCategory() {
-    const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+import { Link, useSearchParams } from 'react-router-dom';
+import {apiUrl} from '../admin/http'
 
-    // Fetch data function (already implemented by you)
-    async function fetchData() {
-        try {
-            const { data } = await axios.get("https://fakestoreapi.com/products/");
-            setProducts(data);
-            setIsLoading(false); // Stop the loading spinner
-        } catch (error) {
-            console.error("Error fetching products:", error);
-            setIsLoading(false);
+function ShopCategory() {
+    const [categories, setCategories] = useState([]);
+    const [brands, setBrands] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [catChecked, setCatChecked] = useState(() => {
+        const category = searchParams.get('category');
+        return category ? category.split(',') : [];
+    });
+    const [brandChecked, setBrandChecked] = useState(() =>{
+        const brand = searchParams.get('brand');
+        return brand ? brand.split(',') : [];
+    });
+    
+
+    const fetchProducts = () => {
+        let search = []
+        let params = '';
+
+        if (catChecked.length > 0){
+            search.push(['category', catChecked])
+        }
+
+        if (brandChecked.length > 0){
+            search.push(['brand', brandChecked])
+        }
+
+        if (search.length > 0){
+            params = new URLSearchParams(search)
+            setSearchParams(params)
+        } else {
+            setSearchParams([])
+        }
+
+        // console.log(params.toString())
+
+        console.log(catChecked)
+        fetch(`${apiUrl}/get-products?${params}`,{
+            method: 'GET',
+            headers: {
+                'Content-type' : 'application/json',
+                'Accept' : 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(result => {
+            console.log(result)
+            if (result.status == 200){
+                setProducts(result.data)
+            } else {
+                console.log("something wenr wrong");
+            }           
+        })
+    }
+
+    const fetchCategories = () => {
+        fetch(`${apiUrl}/get-categories`,{
+            method: 'GET',
+            headers: {
+                'Content-type' : 'application/json',
+                'Accept' : 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.status == 200){
+                setCategories(result.data)
+            } else {
+                console.log("something wenr wrong");
+            }           
+        })
+    }
+
+    const fetchBrands = () => {
+        fetch(`${apiUrl}/get-brands`,{
+            method: 'GET',
+            headers: {
+                'Content-type' : 'application/json',
+                'Accept' : 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.status == 200){
+                setBrands(result.data)
+            } else {
+                console.log("something wenr wrong");
+            }           
+        })
+    }
+
+    const handleCategory = (e) => {
+        const {checked, value} = e.target;
+        if(checked) {
+            setCatChecked(pre => [...pre, value])
+        }else{
+            setCatChecked(catChecked.filter(id => id != value))
         }
     }
 
+    const handleBrand = (e) => {
+        const {checked, value} = e.target;
+        if(checked) {
+            setBrandChecked(pre => [...pre, value])
+        }else{
+            setBrandChecked(brandChecked.filter(id => id != value))
+        }
+    }
+
+    // Fetch data function (already implemented by you)
+    
     // Fetch products on component mount
+
     useEffect(() => {
-        fetchData();
-    }, []);
+        fetchProducts();
+        fetchCategories();
+        fetchBrands();
+    }, [catChecked, brandChecked]);
     return (
         <>
             <Header />
@@ -53,85 +153,61 @@ function ShopCategory() {
                             <div className="left_sidebar_area">
                                 <aside className="left_widgets p_filter_widgets">
                                     <div className="l_w_title">
-                                        <h3>Browse Categories</h3>
+                                        <h3>Categories</h3>
                                     </div>
                                     <div className="widgets_inner">
                                         <ul className="list">
-                                            <li>
-                                                <a href="#">Frozen Fish</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Dried Fish</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Fresh Fish</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Meat Alternatives</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Fresh Fish</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Meat Alternatives</a>
-                                                <span>(250)</span>
-                                            </li>
-                                            <li>
-                                                <a href="#">Meat</a>
-                                                <span>(250)</span>
-                                            </li>
+                                            {
+                                                categories && categories.map(category => {
+                                                    return (
+                                                        <li key={`cat-${category.id}`}>
+                                                            <input 
+                                                                defaultChecked={searchParams.get('category') 
+                                                                            ? searchParams.get('category').includes(category.id) 
+                                                                            : false }
+                                                                type="checkbox"
+                                                                value={category.id}
+                                                                onClick={handleCategory}
+                                                            />
+                                                            <a href="#">{category.name}</a>
+                                                            {/* <span>(250)</span> */}
+                                                        </li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                 </aside>
 
                                 <aside className="left_widgets p_filter_widgets">
                                     <div className="l_w_title">
-                                        <h3>Product filters</h3>
+                                        <h3>Brand </h3>
                                     </div>
                                     <div className="widgets_inner">
                                         <ul className="list">
-                                            <li>
-                                                <a href="#">Apple</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Asus</a>
-                                            </li>
-                                            <li className="active">
-                                                <a href="#">Gionee</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Micromax</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Samsung</a>
-                                            </li>
-                                        </ul>
-                                        <ul className="list">
-                                            <li>
-                                                <a href="#">Apple</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Asus</a>
-                                            </li>
-                                            <li className="active">
-                                                <a href="#">Gionee</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Micromax</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Samsung</a>
-                                            </li>
+                                        {
+                                                brands && brands.map(brand => {
+                                                    return (
+                                                        <li key={`brand-${brand.id}`}>
+                                                            <input 
+                                                                defaultChecked={searchParams.get('brand') 
+                                                                    ? searchParams.get('brand').includes(brand.id) 
+                                                                    : false }
+                                                                type="checkbox"
+                                                                value={brand.id}
+                                                                onClick={handleBrand}
+                                                            />
+                                                            <a href="#">{brand.name}</a>
+                                                            {/* <span>(250)</span> */}
+                                                        </li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                 </aside>
 
-                                <aside className="left_widgets p_filter_widgets">
+                                {/* <aside className="left_widgets p_filter_widgets">
                                     <div className="l_w_title">
                                         <h3>Color Filter</h3>
                                     </div>
@@ -154,15 +230,15 @@ function ShopCategory() {
                                             </li>
                                         </ul>
                                     </div>
-                                </aside>
+                                </aside> */}
 
-                                <aside className="left_widgets p_filter_widgets price_rangs_aside">
+                                {/* <aside className="left_widgets p_filter_widgets price_rangs_aside">
                                     <div className="l_w_title">
                                         <h3>Price Filter</h3>
                                     </div>
                                     <div className="widgets_inner">
                                         <div className="range_item">
-                                            {/* <div id="slider-range"></div> */}
+                                            <div id="slider-range"></div>
                                             <input type="text" className="js-range-slider" value="" />
                                             <div className="d-flex">
                                                 <div className="price_text">
@@ -176,11 +252,11 @@ function ShopCategory() {
                                             </div>
                                         </div>
                                     </div>
-                                </aside>
+                                </aside> */}
                             </div>
                         </div>
                         <div className="col-lg-9">
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col-lg-12">
                                     <div className="product_top_bar d-flex justify-content-between align-items-center">
                                         <div className="single_product_menu">
@@ -223,30 +299,31 @@ function ShopCategory() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row align-items-center latest_product_inner">
-                                {isLoading ? (
-                                    <p>Loading...</p>
-                                ) : (
-                                    products.map((product) => (
-                                        <div key={product.id} className="col-lg-4 col-sm-6">
-                                            <Link to={`/singleproduct/${product.id}`}>
+                                {
+                                    products && products.map(product => {
+                                        return(
+                                            <div key={`product-${product.id}`} className="col-lg-4 col-sm-6">
+                                            <Link to={`/product/${product.id}`} style={{  textDecoration: 'none' }}>
                                                 <div className="single_product_item">
-                                                    <img src={product.image} alt={product.name} />
-                                                    <div className="single_product_text">
+                                                    <img src={product.image_url} alt="" />
+                                                    <div className="single_product_text" style={{ color: 'black' }}>
+                                                        
                                                         <h4>{product.title}</h4>
                                                         <h3>${product.price}</h3>
-                                                        <a href="#" className="add_cart">
+                                                        <a href="#" className="add_cart" style={{  textDecoration: 'none' }}>
                                                             + add to cart<i className="ti-heart"></i>
                                                         </a>
                                                     </div>
                                                 </div>
                                             </Link>
                                         </div>
-                                    ))
-                                )}
+                                        )
+                                    })
+                                }
                             </div>
-                            <div className="col-lg-12">
+                            {/* <div className="col-lg-12">
                                 <div className="pageination">
                                     <nav aria-label="Page navigation example">
                                         <ul className="pagination justify-content-center">
@@ -268,7 +345,7 @@ function ShopCategory() {
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
 
@@ -277,7 +354,7 @@ function ShopCategory() {
             </section>
             {/*================End Category Product Area =================*/}
             {/* product_list part start*/}
-            <section className="product_list best_seller">
+            {/* <section className="product_list best_seller">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
@@ -328,7 +405,7 @@ function ShopCategory() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             {/* product_list part end*/}
             <Footer />
         </>

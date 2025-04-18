@@ -5,7 +5,7 @@ function Featured() {
 
     const [products, setProducts] = useState([]);
     
-        const featuredProducts = async () => {
+    const featuredProducts = async () => {
             await fetch(apiUrl+'/get-featured-products',{
                 method: 'GET' ,
                 headers: {
@@ -41,32 +41,32 @@ function Featured() {
                             
                             {/* <p>Premium Quality</p> */}
                             <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">Add to cart<i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_1.png" alt=""/>
+                            <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            <img src="assets/img/cate-1.png" alt="" className=' h-100'/>
                         </div>
                     </div>
                     <div className="col-lg-5 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
                             <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">Add to cart <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_2.png" alt=""/>
+                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
+                            <img src="assets/img/cate-2.png" alt="" className='w-50 h-80'/>
                         </div>
                     </div>
                     <div className="col-lg-5 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
                             <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">Add to cart <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_3.png" alt=""/>
+                            <a href="#" className="feature_btn">EXPLORE NOW <i className="fas fa-play"></i></a>
+                            <img src="assets/img/cate-3.png" className=' w-50' alt=""/>
                         </div>
                     </div>
                     <div className="col-lg-7 col-sm-6">
                         <div className="single_feature_post_text">
                             {/* <p>Premium Quality</p> */}
                             <h3>Latest foam Sofa</h3>
-                            <a href="#" className="feature_btn">Add to cart <i className="fas fa-play"></i></a>
-                            <img src="assets/img/feature/feature_4.png" alt=""/>
+                            <a href="#" className="feature_btn">EXPLORE NOW<i className="fas fa-play"></i></a>
+                            <img src="assets/img/cate-4.png" className=' h-100' alt=""/>
                         </div>
                     </div>
                 </div>
