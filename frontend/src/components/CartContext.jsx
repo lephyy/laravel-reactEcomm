@@ -63,6 +63,12 @@ export const CartProvider = ({ children }) => {
   // Calculate the total price of the cart
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  const shipping = () => {
+    return 0;
+  }
+
+  
+
   return (
     <CartContext.Provider
       value={{
