@@ -35,7 +35,7 @@ const History = () => {
                         {order.items.map((item, i) => (
                           <li key={i} className="d-flex align-items-center mb-2">
                             <img
-                              src={item.image}
+                              src={item.image_url}
                               alt={item.name}
                               style={{ width: "50px", height: "50px", marginRight: "10px", objectFit: "cover" }}
                             />
