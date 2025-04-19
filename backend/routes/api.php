@@ -23,7 +23,7 @@ Route::get('get-categories', [FrontProductController::class, 'getCategories']);
 Route::get('get-brands', [FrontProductController::class, 'getBrands']);
 Route::get('get-products', [FrontProductController::class, 'getProducts']);
 Route::get('get-product/{id}', [FrontProductController::class, 'getProduct']);
-
+Route::get('get-banner-products', [FrontProductController::class, 'getBannerProduct']);
 
 
 Route::middleware('auth:api')->group(function () {

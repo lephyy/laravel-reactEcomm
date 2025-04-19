@@ -66,7 +66,7 @@ function ProductDetails() {
                         <div className="col-lg-7 col-xl-7">
                             <div className="product_slider_img">
                                 <div id="vertical">
-                                    <img src={product.image_url} alt={product.title} className="img-fluid" />
+                                    <img src={product.image_url} alt={product.title} className="img-fluid ml-5" />
                                 </div>
                             </div>
                         </div>
