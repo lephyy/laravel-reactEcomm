@@ -100,6 +100,20 @@ class ProductController extends Controller
         ],200);
     }
 
+    public function getBannerProduct() {
+        $products = Product::orderBy('created_at', 'DESC')
+                    ->where('status',1)
+                    ->where('is_featured','no')
+                    ->limit(3)
+                    ->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $products
+        ],200);
+
+    }
+
 
 }
 
