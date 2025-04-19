@@ -37,17 +37,23 @@ import {default as CreateProduct} from "./admin/product/Create";
 import {default as EditProduct} from "./admin/product/Edit";
 
 
+import { AuthProvider } from './components/Auth';
+import Register from './pages/Register';
+import {default as UserLogin} from'./pages/Login';
+import Profile from './pages/Profile';
+import { RequireAuth } from './pages/RequireAuth';
+
 
 function App() {
   return (
+    <AuthProvider>  
     <CartProvider>
       <BrowserRouter>
-        {/* <Header /> */}
         <Routes>
+          {/*User*/}
           <Route path='/' element={<Home />} />
           <Route path='/shopcategory' element={<ShopCategory />} />
           <Route path='/product/:id' element={<ProductDetails />} />
-          {/* <Route path='/login' element={<Login />} /> */}
           <Route path='/tracking' element={<Tracking />} />
           <Route path='/checkout' element={<CheckOut />} />
           <Route path="/payment" element={<Payment />} />
@@ -58,7 +64,9 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/history' element={<History />} />
 
-
+          <Route path='/account/register' element={<Register />} />
+          <Route path='/account/login' element={<UserLogin />} />
+          <Route path="/account" element={<RequireAuth><Profile/></RequireAuth>} />
 
           {/* Admin */}
           <Route path='/login' element={<Login />} />
@@ -81,13 +89,11 @@ function App() {
           <Route path="/admin/products/create" element={<AdminRoute><CreateProduct /></AdminRoute>} />
           <Route path="/admin/products/edit/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
 
-
-
-
         </Routes>
       </BrowserRouter>
       <ToastContainer />
     </CartProvider>
+    </AuthProvider> 
   );
 }
 

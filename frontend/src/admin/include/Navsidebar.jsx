@@ -74,7 +74,7 @@ function Navsidebar () {
           
         
         </ul>
-      </nav>
+        </nav>
         </>
     )
 }

@@ -35,7 +35,9 @@ function Header() {
                                                 pages
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                                <Link className="dropdown-item" to="/login">login</Link>
+                                                <Link className="dropdown-item" to="/account/login">login</Link>
+                                                <Link className="dropdown-item" to="/account/register">Register</Link>
+                                                <Link className="dropdown-item" to="/account">Account</Link>
                                                 <Link className="dropdown-item" to="/tracking">tracking</Link>
                                                 <Link className="dropdown-item" to="/checkout">product checkout</Link>
                                                 <Link className="dropdown-item" to="/cart">shopping cart</Link>
