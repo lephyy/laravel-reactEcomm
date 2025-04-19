@@ -1,28 +1,61 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { apiUrl } from '../admin/http'
+import { AuthContext } from '../components/Auth'
+
 
 function Login() {
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setError,
+        formState: { errors },
+    } = useForm();
+
+    const {login} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+   const onSubmit = async(data) => {
+    console.log(data)
+
+    const res = await fetch(`${apiUrl}/account-login`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(res => res.json())
+    .then(result =>{
+      //console.log(result)
+      if(result.status === 'success'){
+        const userInfo = {
+          token: result.authorization.token,
+          id: result.user.id,
+          name: result.user.name,
+          role: result.user.role,
+        }
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        if (userInfo.role === 'customer') {
+          navigate('/');
+        } else {
+          navigate('/account/login');
+        }
+      }else{
+        toast.error(result.message);
+      }
+    })
+  }
+
   return (
     <>
-        <Header/>
-        {/* breadcrumb start*/}
-    <section className="breadcrumb breadcrumb_bg">
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-lg-8">
-                    <div className="breadcrumb_iner">
-                        <div className="breadcrumb_iner_item">
-                            <h2>Tracking Order</h2>
-                            <p>Home <span>-</span> Tracking Order</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {/* breadcrumb start*/}
-
+    <Header/>
     {/*================login_part Area =================*/}
     <section className="login_part padding_top">
         <div className="container">
@@ -33,7 +66,10 @@ function Login() {
                             <h2>New to our Shop?</h2>
                             <p>There are advances being made in science and technology
                                 everyday, and a good example of this is the</p>
-                            <a href="#" className="btn_3">Create an Account</a>
+                            <Link to="/account/register">
+                                <a href="#" className="btn_3">Create an Account</a>
+                            </Link>
+                            
                         </div>
                     </div>
                 </div>
@@ -42,26 +78,50 @@ function Login() {
                         <div className="login_part_form_iner">
                             <h3>Welcome Back ! <br/>
                                 Please Sign in now</h3>
-                            <form className="row contact_form" action="#" method="post" novalidate="novalidate">
-                                <div className="col-md-12 form-group p_star">
-                                    <input type="text" className="form-control" id="name" name="name" value=""
-                                        placeholder="Username"/>
-                                </div>
-                                <div className="col-md-12 form-group p_star">
-                                    <input type="password" className="form-control" id="password" name="password" value=""
-                                        placeholder="Password"/>
-                                </div>
-                                <div className="col-md-12 form-group">
-                                    <div className="creat_account d-flex align-items-center">
-                                        <input type="checkbox" id="f-option" name="selector"/>
-                                        <label for="f-option">Remember me</label>
+                                <form className="row contact_form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                                    <div className="col-md-12 form-group p_star">
+                                        <input {
+                                        ...register("email", {
+                                            required: "The Email Field is required.",
+                                            pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: "Invalid email address",
+                                            },
+                                        })
+                                        }
+                                        type="email" className={`form-control ${errors.email && 'is-invalid'}`}
+                                            placeholder="Email"/>
+                                        {
+                                        errors.email && <p className='invalid-feedback'>{errors.email?.message}</p>
+                                        }
                                     </div>
-                                    <button type="submit" value="submit" className="btn_3">
-                                        log in
-                                    </button>
-                                    <a className="lost_pass" href="#">forget password?</a>
-                                </div>
-                            </form>
+                                    <div className="col-md-12 form-group p_star">
+                                        <input {
+                                        ...register("password", {
+                                            required: "The password Field is required."
+                                        })
+                                        }
+                                        type="password" className={`form-control ${errors.password && 'is-invalid'}`}
+                                            placeholder="Password"/>
+                                        {
+                                        errors.password && <p className='invalid-feedback'>{errors.password?.message}</p>
+                                        }
+                                    </div>
+                                    <div className="col-md-12 form-group">
+                                        <div className="creat_account d-flex align-items-center">
+                                            <input type="checkbox" id="f-option" name="selector"/>
+                                            <label for="f-option">Remember me</label>
+                                        </div>
+                                        <button type="submit" value="submit" className="btn_3">
+                                            log in
+                                        </button>
+                                        <Link to="/account/register" className="lost_pass">
+                                           Create an Account
+                                        </Link>
+                                    </div>
+                                </form>
+
+                            
                         </div>
                     </div>
                 </div>
