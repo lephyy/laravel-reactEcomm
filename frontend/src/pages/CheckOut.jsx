@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useContext } from "react";
@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 function CheckOut() {
   const { cart } = useContext(CartContext);
   const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const {} = useContext(CartContext);
+
 
   // Calculate total amount
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -20,6 +23,9 @@ function CheckOut() {
 
     navigate("/payment", { state: { total, carts: cart } });
   };
+
+
+
 
   return (
     <>
@@ -41,7 +47,7 @@ function CheckOut() {
 
       <section className="checkout_area padding_top">
         <div className="container">
-          <div class="returning_customer">
+          {/* <div class="returning_customer">
             <div class="check_title">
               <h2>
                 Returning Customer?
@@ -83,7 +89,7 @@ function CheckOut() {
             </div>
             <input type="text" placeholder="Enter coupon code" />
             <a class="tp_btn" href="#">Apply Coupon</a>
-          </div>
+          </div> */}
           <div className="billing_details">
             <div className="row">
               <div className="col-lg-8">
@@ -91,52 +97,52 @@ function CheckOut() {
                 <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                   <div class="col-md-6 form-group p_star">
                     <input type="text" class="form-control" id="first" name="name" />
-                    <span class="placeholder" data-placeholder="First name"></span>
+                    <span class="placeholder" data-placeholder="Full name"></span>
                   </div>
-                  <div class="col-md-6 form-group p_star">
+                  {/* <div class="col-md-6 form-group p_star">
                     <input type="text" class="form-control" id="last" name="name" />
                     <span class="placeholder" data-placeholder="Last name"></span>
-                  </div>
-                  <div class="col-md-12 form-group">
+                  </div> */}
+                  {/* <div class="col-md-12 form-group">
                     <input type="text" class="form-control" id="company" name="company" placeholder="Company name" />
-                  </div>
+                  </div> */}
                   <div class="col-md-6 form-group p_star">
                     <input type="text" class="form-control" id="number" name="number" />
                     <span class="placeholder" data-placeholder="Phone number"></span>
                   </div>
-                  <div class="col-md-6 form-group p_star">
+                  <div class="col-md-12 form-group p_star">
                     <input type="text" class="form-control" id="email" name="compemailany" />
                     <span class="placeholder" data-placeholder="Email Address"></span>
                   </div>
-                  <div class="col-md-12 form-group p_star">
+                  {/* <div class="col-md-12 form-group p_star">
                     <select class="country_select">
                       <option value="1">Country</option>
                       <option value="2">Country</option>
                       <option value="4">Country</option>
                     </select>
-                  </div>
-                  <div class="col-md-12 form-group p_star">
+                  </div> */}
+                  {/* <div class="col-md-12 form-group p_star">
                     <input type="text" class="form-control" id="add1" name="add1" />
                     <span class="placeholder" data-placeholder="Address line 01"></span>
-                  </div>
+                  </div> */}
                   <div class="col-md-12 form-group p_star">
                     <input type="text" class="form-control" id="add2" name="add2" />
-                    <span class="placeholder" data-placeholder="Address line 02"></span>
+                    <span class="placeholder" data-placeholder="Address line"></span>
                   </div>
                   <div class="col-md-12 form-group p_star">
                     <input type="text" class="form-control" id="city" name="city" />
                     <span class="placeholder" data-placeholder="Town/City"></span>
                   </div>
-                  <div class="col-md-12 form-group p_star">
+                  {/* <div class="col-md-12 form-group p_star">
                     <select class="country_select">
                       <option value="1">District</option>
                       <option value="2">District</option>
                       <option value="4">District</option>
                     </select>
-                  </div>
-                  <div class="col-md-12 form-group">
+                  </div> */}
+                  {/* <div class="col-md-12 form-group">
                     <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />
-                  </div>
+                  </div> */}
                   <div class="col-md-12 form-group">
                     <div class="creat_account">
                       <input type="checkbox" id="f-option2" name="selector" />
