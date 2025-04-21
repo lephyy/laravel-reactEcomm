@@ -1,8 +1,40 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { useParams } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { apiUrl } from '../admin/http';
 
-function Confirmation() {
+const Confirmation = () => {
+    const [order,setOrder] = useState([]);
+    const [loading,setLoading] = useState(true);
+    const params = useParams();
+    const [items,setItems] = useState([]);
+    const fetchOrder = () =>{
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token; 
+      fetch(`${apiUrl}/get-order-details/${params.id}`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          'Accept':'application/json',
+          'Authorization':`Bearer ${token}`
+        }
+      }).then((res)=>res.json())
+      .then(result =>{
+        // setLoading(false);
+        if(result.status === 200){
+          setOrder(result.data);
+          setItems(result.data.items);
+          // setLoading(false);
+        }else{
+        }
+
+      })
+    }
+    useEffect(()=>{
+      fetchOrder();
+    })
   return (
     <>
         <Header/>
@@ -26,69 +58,75 @@ function Confirmation() {
   {/*================ confirmation part start =================*/}
   <section className="confirmation_part padding_top">
     <div className="container">
+      {/* {
+        loading == true &&
+        <div className="text-center mt-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } */}
       <div className="row">
-        <div className="col-lg-12">
+        <div className="col-lg-12 col-lx-4">
           <div className="confirmation_tittle">
             <span>Thank you. Your order has been received.</span>
           </div>
         </div>
-        <div className="col-lg-6 col-lx-4">
-          <div className="single_confirmation_details">
-            <h4>order info</h4>
-            <ul>
+        <div className="col-lg-12">
+        <div className="single_confirmation_details">
+          <h4>Order info</h4>
+          <div className="row">
+            {/* Left Column */}
+            <ul className="col-lg-6">
               <li>
-                <p>order number</p><span>: 60235</span>
+                <p>Order ID</p><span>: #{order.id}</span>
               </li>
               <li>
-                <p>data</p><span>: Oct 03, 2017</span>
+                <p>Date</p><span>: {order.created_at}</span>
               </li>
               <li>
-                <p>total</p><span>: USD 2210</span>
+                <p>Status</p>
+                <span>:</span>
+                  {
+                    order.status == 'pending' && <span className='badge text-warning'>Pending</span>
+                  }
+                  {
+                    order.status == 'shipped' && <span className='badge text-warning'>Shipped</span>
+                  }
+                  {
+                    order.status == 'delivered' && <span className='badge text-success'>Delivered</span>
+                  }
+                  {
+                    order.status == 'cancelled' && <span className='badge text-danger'>Cancelled</span>
+                  }
+                
               </li>
               <li>
-                <p>mayment methord</p><span>: Check payments</span>
+                <p>Payment Method</p><span>: COD</span>
+              </li>
+            </ul>
+            
+            {/* Right Column */}
+            <ul className="col-lg-6">
+              <li>
+                <p>Customer</p><span>: {order.name}</span>
+              </li>
+              <li>
+                <p>Address</p><span>: {order.address},{order.city}</span>
+              </li>
+              {/* <li>
+                <p>State/City</p><span>: {order.state},{order.city}</span>
+              </li>
+              <li>
+                <p>Country/Zip</p><span>: {order.country},{order.zip}</span>
+              </li> */}
+              <li>
+                <p>Contact</p><span>: {order.phone}</span>
               </li>
             </ul>
           </div>
         </div>
-        <div className="col-lg-6 col-lx-4">
-          <div className="single_confirmation_details">
-            <h4>Billing Address</h4>
-            <ul>
-              <li>
-                <p>Street</p><span>: 56/8</span>
-              </li>
-              <li>
-                <p>city</p><span>: Los Angeles</span>
-              </li>
-              <li>
-                <p>country</p><span>: United States</span>
-              </li>
-              <li>
-                <p>postcode</p><span>: 36952</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-lg-6 col-lx-4">
-          <div className="single_confirmation_details">
-            <h4>shipping Address</h4>
-            <ul>
-              <li>
-                <p>Street</p><span>: 56/8</span>
-              </li>
-              <li>
-                <p>city</p><span>: Los Angeles</span>
-              </li>
-              <li>
-                <p>country</p><span>: United States</span>
-              </li>
-              <li>
-                <p>postcode</p><span>: 36952</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+      </div>
       </div>
       <div className="row">
         <div className="col-lg-12">
@@ -97,43 +135,54 @@ function Confirmation() {
             <table className="table table-borderless">
               <thead>
                 <tr>
-                  <th scope="col" colspan="2">Product</th>
+                  <th scope="col">Item</th>
                   <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
                   <th scope="col">Total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="3">Subtotal</th>
-                  <th> <span>$2160.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="3">shipping</th>
-                  <th><span>flat rate: $50.00</span></th>
-                </tr>
+                {
+                  items.map((item)=>(
+                    <tr key={item.id}>
+                      {/* <td className="cart_product_img">
+                        <img src={item.product.image} alt="#"/>
+                      </td> */}
+                      <td>
+                        <h5>{item.name}</h5>
+                      </td>
+                      <td>
+                        <h5>{item.qty}</h5>
+                      </td>
+                      <td>
+                        <h5>{item.unit_price}</h5>
+                      </td>
+                      <td>
+                        <h5>${item.price}</h5>
+                      </td>
+                    </tr>
+                  ))
+                }
               </tbody>
               <tfoot>
                 <tr>
-                  <th scope="col" colspan="3">Quantity</th>
-                  <th scope="col">Total</th>
+                  <td colSpan="3">Subtotal</td>
+                  <td>${order.subtotal}</td>
                 </tr>
-              </tfoot>
+                <tr>
+                  <td colSpan="3">Shipping</td>
+                  <td>${order.shipping}</td>
+                </tr>
+                <tr>
+                  <td colSpan="3">Total</td>
+                  <td>${order.total}</td>
+                </tr>
+                </tfoot>
             </table>
+          </div>
+          <div className='text-center mt-3'>
+            <button className='btn btn-primary'>View Order Detail</button>
+            <button className='btn btn-outline-secondary ms-2'>Continue Shopping</button>
           </div>
         </div>
       </div>
