@@ -42,6 +42,7 @@ import Register from './pages/Register';
 import {default as UserLogin} from'./pages/Login';
 import Profile from './pages/Profile';
 import { RequireAuth } from './pages/RequireAuth';
+import { COD } from './components/COD';
 
 
 function App() {
@@ -55,8 +56,10 @@ function App() {
           <Route path='/shopcategory' element={<ShopCategory />} />
           <Route path='/product/:id' element={<ProductDetails />} />
           <Route path='/tracking' element={<Tracking />} />
-          <Route path='/checkout' element={<CheckOut />} />
-          <Route path="/payment" element={<Payment />} />
+          <Route path='/checkout' element={<RequireAuth><CheckOut /></RequireAuth>} />
+          <Route path="/payment" element={<RequireAuth><Payment /></RequireAuth>} />
+          <Route path="/cashondelivery" element={<RequireAuth><COD /></RequireAuth>} />
+          <Route path="/order/confirmation/:id" element={<RequireAuth><Confirmation /></RequireAuth>} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/confirmation' element={<Confirmation />} />
           <Route path='/blog' element={<Blog />} />

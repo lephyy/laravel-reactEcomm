@@ -29,6 +29,7 @@ Route::get('get-banner-products', [FrontProductController::class, 'getBannerProd
 
 Route::middleware(['auth:api','checkUserRole'])->group(function () {
     Route::post('save-order', [OrderController::class, 'saveOrder']);
+    Route::get('get-order-details/{id}', [AccountController::class, 'getOrderDetail']);
 });
 
 Route::middleware(['auth:api','checkAdminRole'])->group(function () {
