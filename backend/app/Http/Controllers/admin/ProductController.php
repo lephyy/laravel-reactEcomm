@@ -14,7 +14,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
-    //This Method will return all the products
+
     public function index(){
         $products = Product::orderBy('created_at','DESC')
                     ->with('product_images')
@@ -25,7 +25,7 @@ class ProductController extends Controller
         ],200);
     }
 
-    //This Method will store a new product
+
     public function store(Request $request){
         //Validate the request
         $validator = Validator::make($request->all(),[
@@ -44,7 +44,6 @@ class ProductController extends Controller
             ],400);
         }
 
-        //Create a new product
         $product = new Product();
         $product->title = $request->title;
         $product->price = $request->price;
@@ -60,12 +59,12 @@ class ProductController extends Controller
         $product->barcode = $request->barcode;
         $product->save();
 
-        //Save the product images
+
         if(!empty($request->gallery)){
             foreach($request->gallery as $key => $tempImageId){
                 $tempImage = TempImage::find($tempImageId);
 
-                //Large image
+
                 $extArray = explode('.',$tempImage->name);
                 $ext = end($extArray);
                 $rand = rand(1000,10000);
@@ -76,8 +75,7 @@ class ProductController extends Controller
                 $img->scaleDown(1200);
                 $img->save(public_path('uploads/temp/product/large/'.$imageName));
 
-                //Small image
-                // $imageName = $product->id.'-'.time().'.'.$ext; //2-1231312.jpg
+
                 $manager = new ImageManager(Driver::class);
                 $img = $manager->read(public_path('uploads/temp/product/'.$tempImage->name)); // 800 x 600
                 $img->coverDown(400,460);
@@ -102,7 +100,7 @@ class ProductController extends Controller
 
     }
 
-    //This Method will return all a single product
+
     public function show($id){
         $product = Product::with('product_images')
                     ->find($id);
@@ -120,7 +118,7 @@ class ProductController extends Controller
         ],200);
     }
 
-    //This Method will update a product
+
     public function update($id, Request $request){
 
         $product = Product::find($id);
@@ -148,7 +146,7 @@ class ProductController extends Controller
             ],400);
         }
 
-        //Update a new product
+
         $product->title = $request->title;
         $product->price = $request->price;
         $product->compare_price = $request->compare_price;
@@ -169,7 +167,7 @@ class ProductController extends Controller
         ], 200);
     }
 
-    //This Method will delete a product
+
     public function destroy($id){
         $product = Product::with('product_images')->find($id);
 
@@ -210,7 +208,7 @@ class ProductController extends Controller
             ],400);
         }
 
-        // Store the image
+
 
 
         $image = $request->file('image');
@@ -222,13 +220,13 @@ class ProductController extends Controller
         $img->scaleDown(1200);
         $img->save(public_path('uploads/temp/product/large/'.$imageName));
 
-        // $imageName = $product->id.'-'.time().'.'.$ext; //2-1231312.jpg
+
         $manager = new ImageManager(Driver::class);
         $img = $manager->read($image->getPathname()); // 800 x 600
         $img->coverDown(400,460);
         $img->save(public_path('uploads/temp/product/small/'.$imageName));
 
-        //insert a record in product_images table
+       
         $productImage = new ProductImage();
         $productImage->image = $imageName;
         $productImage->product_id = $request->product_id;

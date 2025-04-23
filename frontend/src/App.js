@@ -43,6 +43,8 @@ import {default as UserLogin} from'./pages/Login';
 import Profile from './pages/Profile';
 import { RequireAuth } from './pages/RequireAuth';
 import { COD } from './components/COD';
+import ShowOrders from './admin/orders/ShowOrders';
+import OrderDetail from './admin/orders/OrderDetail';
 
 
 function App() {
@@ -91,6 +93,10 @@ function App() {
           <Route path="/admin/products" element={<AdminRoute><ShowProducts /></AdminRoute>} />
           <Route path="/admin/products/create" element={<AdminRoute><CreateProduct /></AdminRoute>} />
           <Route path="/admin/products/edit/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
+
+          <Route path="/admin/orders" element={<AdminRoute><ShowOrders /></AdminRoute>} />
+          <Route path="/admin/orders/:id" element={<AdminRoute><OrderDetail /></AdminRoute>} />
+
 
         </Routes>
       </BrowserRouter>

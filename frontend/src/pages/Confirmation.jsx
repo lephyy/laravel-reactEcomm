@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { apiUrl } from '../admin/http';
 
@@ -182,7 +182,7 @@ const Confirmation = () => {
           </div>
           <div className='text-center mt-3'>
             <button className='btn btn-primary'>View Order Detail</button>
-            <button className='btn btn-outline-secondary ms-2'>Continue Shopping</button>
+            <Link to={'/'} className='btn btn-outline-secondary ms-2'>Continue Shopping</Link>
           </div>
         </div>
       </div>

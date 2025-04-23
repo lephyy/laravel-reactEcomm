@@ -35,11 +35,7 @@ function Nav () {
                 </li>
               </ul>
               <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item d-none d-lg-flex">
-                  <a class="nav-link" href="#">
-                    <span class="btn btn-primary">+ Create new</span>
-                  </a>
-                </li>
+                
                 <li class="nav-item d-none d-lg-flex">
                   <a class="nav-link" href="#">
                     <span class="btn btn-danger" onClick={handleLogout}>Log out</span>

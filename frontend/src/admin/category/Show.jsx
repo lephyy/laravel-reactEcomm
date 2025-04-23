@@ -73,7 +73,6 @@ const Show = () => {
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h2 class="text-uppercase">Categories</h2>
                             <Link to="/admin/categories/create" className="btn btn-success">Create</Link>
-                            {/* <button class="btn btn-success">+ Create Category</button> */}
                         </div>
                         {
                             categories && categories.length > 0 && 

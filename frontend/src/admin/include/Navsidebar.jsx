@@ -41,7 +41,7 @@ function Navsidebar () {
             </Link>
           </li>
           <li class="nav-item">
-            <Link className="nav-link" to="/admin/banner">
+            <Link className="nav-link" to="/admin/orders">
                 <i class="fa-solid fa-bag-shopping"></i>
                 <span class="menu-title ml-4">Orders</span>       
             </Link>
