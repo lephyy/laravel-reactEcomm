@@ -1,8 +1,48 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { CartContext } from './CartContext'
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { CartContext } from './CartContext';
+import { useAuth } from './Auth';
+
 function Header() {
-    const { totalItem } = useContext(CartContext)
+    const { totalItem, cart, setCart} = useContext(CartContext);
+    const { user, logout, isAuthenticated, loading } = useAuth();
+    const navigate = useNavigate();
+    const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    useEffect(() => {
+  const storedCart = localStorage.getItem("cart");
+  if (storedCart) {
+    setCart(JSON.parse(storedCart));
+  } else {
+    setCart([]);
+  }
+}, []);
+
+    if (loading) {
+        return (
+            <header className="main_menu home_menu">
+                <div className="container">
+                    <div className="row align-items-center">
+                        <div className="col-lg-12">
+                            <nav className="navbar navbar-expand-lg navbar-light">
+                                <a className="navbar-brand" href="/"> 
+                                    <img src="assets/img/logo.png" alt="logo" /> 
+                                </a>
+                                <div className="d-flex align-items-center gap-3">
+                                    <span>Loading...</span>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        );
+    }
+
     return (
         <>
             {/*::header part start::*/}
@@ -42,7 +82,6 @@ function Header() {
                                                 <Link className="dropdown-item" to="/checkout">product checkout</Link>
                                                 <Link className="dropdown-item" to="/cart">shopping cart</Link>
                                                 <Link className="dropdown-item" to="/confirmation">confirmation</Link>
-                                                {/* <Link className="dropdown-item" to="/elements">elements</Link> */}
                                             </div>
                                         </li>
                                         <li className="nav-item dropdown">
@@ -63,41 +102,62 @@ function Header() {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="hearer_icon d-flex"> {/*onClick={() => document.getElementById('search_input_box').style.display = 'block'}*/}
-                                    <button id="search_1">
+                                <div className="d-flex align-items-center gap-3">
+                                    <button id="search_1" className="btn p-0">
                                         <i className="ti-search"></i>
                                     </button>
-                                    <a href=""><i className="ti-heart"></i></a>
-
-                                    <div className="cart">
-                                        <Link to="/cart">
+                                    <a href="#" className="btn p-0">
+                                        <i className="ti-heart"></i>
+                                    </a>
+                                
+                                        <div className="cart">
+                                        <Link to="/cart" className="btn p-0 position-relative">
                                             <i className="fas fa-shopping-cart" data-count={totalItem}></i>
                                         </Link>
                                     </div>
-
-                                    {/*<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <div className="single_product">
-
-                                </div>
-                            </div>*/}
+                                    
+                                   
+                                    <div className="dropdown">
+                                        <button
+                                            className="btn dropdown-toggle"
+                                            type="button"
+                                            id="userDropdown"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            <i className="fa-regular fa-circle-user me-5"></i>
+                                            {isAuthenticated ? user?.name || 'User' : 'Account'}
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                                            {!isAuthenticated ? (
+                                            <>
+                                                <li>
+                                                    <Link className="dropdown-item" to="/account/login">Login</Link>
+                                                </li>
+                                                <li>
+                                                    <Link className="dropdown-item" to="/account/register">Register</Link>
+                                                </li>
+                                            </>
+                                            ) : (
+                                            <>
+                                                <li>
+                                                    <Link className="dropdown-item" to="/account/profile">Profile</Link>
+                                                </li>
+                                                <li>
+                                                    <button className="dropdown-item" onClick={handleLogout}>Logout</button>
+                                                </li>
+                                            </>
+                                            )}
+                                        </ul>
+                                    </div>
                                 </div>
                             </nav>
                         </div>
                     </div>
                 </div>
-                {/* <div className="search_input" id="search_input_box">
-        <div className="container ">
-            <form className="d-flex justify-content-between search-inner">
-                <input type="text" className="form-control" id="search_input" placeholder="Search Here"/>
-                <button type="submit" className="btn"></button>
-                <span className="ti-close" id="close_search" title="Close Search"></span>
-            </form>
-        </div>
-    </div> */}
             </header>
             {/* Header part end*/}
         </>
     )
 }
-
-export default Header
+export default Header;

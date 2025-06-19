@@ -3,35 +3,129 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { apiUrl } from "../admin/http";
 
 const Payment = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { total = 0, carts = [] } = state || {}; // Fallback to prevent errors
+  // Extract customer data from the passed state
+  const { total = 0, carts = [], customer = {} } = state || {};
   const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [showModal, setShowModal] = useState(false); // Modal state
+  const [showModal, setShowModal] = useState(false);
 
-  const handleApprove = (orderId) => {
-    // Save payment and cart data to history
-    const history = JSON.parse(localStorage.getItem("history")) || [];
-    const updatedHistory = [...history, { orderId, items: carts, total }];
-    localStorage.setItem("history", JSON.stringify(updatedHistory));
+  const handleApprove = async (orderId) => {
+    const shipping = 10;
+    const subTotal = total - shipping; // Adjust since total already includes shipping
+    const grand_total = total;
 
-    // Clear cart
-    localStorage.removeItem("cart");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo?.token;
 
-    setPaymentCompleted(true);
-    setShowModal(true); // Show modal after payment completion
+    if (!token) {
+      alert("You must be logged in to complete this order.");
+      navigate("/login");
+      return;
+    }
+
+    // Use the customer data from the checkout form instead of localStorage
+    const customerInfo = {
+      name: customer.name || userInfo?.name || '',
+      email: customer.email || userInfo?.email || '',
+      phone: customer.phone || userInfo?.phone || '',
+      address: customer.address || userInfo?.address || '',
+      city: customer.city || userInfo?.city || 'Unknown'
+    };
+
+    // Validate required fields
+    if (!customerInfo.email) {
+      alert("Email is required to complete the order. Please go back and fill in your email.");
+      navigate(-1); // Go back to checkout
+      return;
+    }
+
+    if (!customerInfo.name) {
+      alert("Name is required to complete the order. Please go back and fill in your name.");
+      navigate(-1);
+      return;
+    }
+
+    const newOrder = {
+      name: customerInfo.name,
+      email: customerInfo.email,
+      phone: customerInfo.phone,
+      address: customerInfo.address,
+      city: customerInfo.city,
+      total: grand_total,
+      subtotal: subTotal,
+      shipping: shipping,
+      discount: 0,
+      pay_status: "paid",
+      status: "pending",
+      cart: carts.map(item => ({
+        product_id: item.id,
+        title: item.title,
+        qty: item.quantity,
+        price: item.price
+      }))
+    };
+
+    console.log("Sending order data:", newOrder);
+    console.log("Customer email:", customerInfo.email);
+
+    try {
+      const response = await fetch(`${apiUrl}/save-order`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(newOrder),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Success response:", responseData);
+        setPaymentCompleted(true);
+        setShowModal(true);
+        localStorage.removeItem("cart");
+      } else {
+        const errorData = await response.text();
+        console.error("Failed to save order. Status:", response.status);
+        console.error("Error response:", errorData);
+        
+        alert(`Payment succeeded, but failed to save order. Status: ${response.status}. Please contact support.`);
+      }
+    } catch (error) {
+      console.error("Network error submitting order:", error);
+      alert(`Something went wrong while submitting your order: ${error.message}`);
+    }
   };
 
-  // const closeModal = () => {
-  //   setShowModal(false); // Simply close the modal
-  // };
   const closeModal = () => {
-    setShowModal(false); // Close the modal
-    localStorage.removeItem("cart"); // Clear the cart from local storage
-    window.location.reload(); // Refresh the page to update the cart UI
+    setShowModal(false);
+    localStorage.removeItem("cart");
+    navigate("/"); // Navigate to home or orders page
   };
+
+  // Show error if no customer data is provided
+  if (!customer || Object.keys(customer).length === 0) {
+    return (
+      <>
+        <Header />
+        <div className="container mt-5 pt-5">
+          <div className="alert alert-danger text-center">
+            <h4>Error: Missing Customer Information</h4>
+            <p>Please go back to checkout and fill in your details.</p>
+            <button className="btn btn-primary" onClick={() => navigate("/checkout")}>
+              Back to Checkout
+            </button>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -52,9 +146,18 @@ const Payment = () => {
                 <h2 className="mb-0">Complete Your Payment</h2>
               </div>
               <div className="card-body">
+                {/* Show customer info for confirmation */}
+                <div className="mb-4">
+                  <h5>Order Details:</h5>
+                  <p><strong>Name:</strong> {customer.name}</p>
+                  <p><strong>Email:</strong> {customer.email}</p>
+                  <p><strong>Address:</strong> {customer.address}</p>
+                  <p><strong>City:</strong> {customer.city}</p>
+                </div>
+                
                 <div className="text-center mb-4">
                   <h4 className="text-secondary">
-                    Total Amount: <span className="text-dark">${(total + 10).toFixed(2)}</span>
+                    Total Amount: <span className="text-dark">${total.toFixed(2)}</span>
                   </h4>
                   <p className="text-muted">(Includes a flat $10 shipping fee)</p>
                 </div>
@@ -65,7 +168,7 @@ const Payment = () => {
                         purchase_units: [
                           {
                             amount: {
-                              value: (total + 10).toFixed(2), // Include shipping
+                              value: total.toFixed(2),
                             },
                           },
                         ],
@@ -73,7 +176,7 @@ const Payment = () => {
                     }}
                     onApprove={(data, actions) => {
                       return actions.order.capture().then((details) => {
-                        handleApprove(details.id); // Pass the order ID
+                        handleApprove(details.id);
                       });
                     }}
                     onError={(err) => {
@@ -113,7 +216,7 @@ const Payment = () => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={closeModal} // Only closes the modal now
+                  onClick={closeModal}
                 />
               </div>
               <div className="modal-body">

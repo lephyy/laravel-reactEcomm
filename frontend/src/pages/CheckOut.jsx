@@ -9,7 +9,7 @@ import { apiUrl } from "../admin/http";
 import { toast } from "react-toastify";
 
 function CheckOut() {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('cod');
 
@@ -39,13 +39,19 @@ function CheckOut() {
       return;
     }
 
-    console.log("Order data:", { ...data, paymentMethod });
-    
-    // Navigate to the appropriate payment page based on payment method
-    if(paymentMethod === 'cod'){
-      saveOrder(data,'not paid')
+    if (paymentMethod === 'cod') {
+      saveOrder(data, 'not paid');
+    } else if (paymentMethod === 'paypal') {
+      navigate("/payment", {
+        state: {
+          total: total + 10,
+          carts: cart,
+          customer: data,
+        },
+      });
     }
-  };
+  }; 
+
   const saveOrder = (formData, paymentStatus) => {
     const shipping = 10;
     const subTotal = total;
@@ -82,13 +88,14 @@ function CheckOut() {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`, // Use the extracted token here
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(newFormData),
     })
     .then(res => {
       if (res.status === 401) {
         alert("Your session has expired. Please login again.");
+      
         navigate('/login');
         return null;
       }
@@ -98,8 +105,13 @@ function CheckOut() {
       if (!result) return;
       
       if(result.status == 200){
-        localStorage.removeItem('cart');  
-        navigate(`/order/confirmation/${result.id}`)
+        clearCart(); 
+        // Use setTimeout to ensure state update completes before navigation
+        setTimeout(() => {
+          navigate(`/order/confirmation/${result.id}`);
+        }, 100);
+        
+        toast.success("Order placed successfully!");
       } else {
         alert(result.message);
       }
@@ -109,6 +121,7 @@ function CheckOut() {
       alert("Error processing your order. Please try again.");
     });
   }
+
   return (
     <>
       <Header />
@@ -177,22 +190,11 @@ function CheckOut() {
                         ...register("address", { 
                           required: "The address field is required" })
                       }
-                      type="text" placeholder="Address" className={`form-control ${errors.email && 'is-invalid'}`} rows={3}></textarea> 
+                      type="text" placeholder="Address" className={`form-control ${errors.address && 'is-invalid'}`} rows={3}></textarea> 
                       {
                         errors.address && <p className='invalid-feedback'>{errors.address?.message}</p>
                       }
                     </div>
-                    {/* <div className="col-md-12 form-group p_star">
-                      <input
-                      {
-                        ...register("country", { 
-                          required: "The country field is required" })
-                      }
-                      type="text" className={`form-control ${errors.country && 'is-invalid'}`} placeholder="Country"/>
-                      {
-                        errors.country && <p className='invalid-feedback'>{errors.country?.message}</p>
-                      }
-                    </div> */}
                     <div className="col-md-12 form-group p_star">
                       <input
                       {
@@ -204,30 +206,6 @@ function CheckOut() {
                         errors.city && <p className='invalid-feedback'>{errors.city?.message}</p>
                       }
                     </div>
-                    {/* <div className="col-md-12 form-group p_star">
-                      <input
-                      {
-                        ...register("state", { 
-                          required: "The state field is required" })
-                      }
-                      type="text" className={`form-control ${errors.state && 'is-invalid'}`} placeholder="State"/>
-                      {
-                        errors.state && <p className='invalid-feedback'>{errors.state?.message}</p>
-                      }
-                    </div> */}
-                    {/* <div className="col-md-12 form-group p_star">
-                      <input
-                      {
-                        ...register("zip", { 
-                          required: "The zip field is required" })
-                      }
-                      type="text" className={`form-control ${errors.zip && 'is-invalid'}`} placeholder="Zip Code"/>
-                      {
-                        errors.zip && <p className='invalid-feedback'>{errors.zip?.message}</p>
-                      }
-                    </div> */}
-                    
-                  {/* Billing form content here */}
                 </div>
                 <div className="col-lg-4">
                   <div className="order_box">
@@ -253,12 +231,6 @@ function CheckOut() {
                           <p>Total <span>${(total + 10).toFixed(2)}</span></p>
                         </li>
                       </ul>
-                      {/* <Link to={`/payment`} className="btn_3">
-                        Proceed to Paypal
-                      </Link>
-                      <Link to={`/cashondelivery`} className="btn_3">
-                        Cash on Delivery
-                      </Link> */}
                   </div>
                   <div className="payment_item mt-4">
                       <h4>Payment Method</h4>
@@ -284,7 +256,7 @@ function CheckOut() {
                               width: '20px', 
                               height: '20px', 
                               marginRight: '15px',
-                              accentColor: '#ff3368' // Custom color for the radio button
+                              accentColor: '#ff3368'
                             }}
                           />
                           <label htmlFor="paypal" style={{ margin: 0, fontWeight: paymentMethod === 'paypal' ? 'bold' : 'normal' }}>
@@ -312,7 +284,7 @@ function CheckOut() {
                               width: '20px', 
                               height: '20px', 
                               marginRight: '15px',
-                              accentColor: '#ff3368' // Custom color for the radio button
+                              accentColor: '#ff3368'
                             }}
                           />
                           <label htmlFor="cod" style={{ margin: 0, fontWeight: paymentMethod === 'cod' ? 'bold' : 'normal' }}>

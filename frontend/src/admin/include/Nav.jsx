@@ -13,7 +13,7 @@ function Nav () {
         <>
           <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row default-layout-navbar">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-              <a class="navbar-brand brand-logo" href="#"><img src="content/images/logo.svg" alt="logo"/></a>
+              <a class="navbar-brand brand-logo" href="#"><img src="assets/img/logo.png" alt="logo"/></a>
               <a class="navbar-brand brand-logo-mini" href="#"><img src="content/images/logo-mini.svg" alt="logo"/></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -66,7 +66,7 @@ function Nav () {
                 <li class="nav-item dropdown">
                   <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                     <i class="fas fa-bell mx-0"></i>
-                    <span class="count">16</span>
+                    {/* <span class="count">16</span> */}
                   </a>
                   {/* <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
                     <a class="dropdown-item">
@@ -121,7 +121,7 @@ function Nav () {
                 <li class="nav-item dropdown">
                   <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-envelope mx-0"></i>
-                    <span class="count">25</span>
+                    {/* <span class="count">25</span> */}
                   </a>
                   {/* <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
                     <div class="dropdown-item">
@@ -175,7 +175,7 @@ function Nav () {
                 </li>
                 <li class="nav-item nav-profile dropdown">
                   <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img src="content/images/faces/face5.jpg" alt="profile"/>
+                    <img src="frontend\public\assets\img\profile\sdachgame.jpg" alt="profile"/>
                   </a>
                   {/* <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                     <a class="dropdown-item">
