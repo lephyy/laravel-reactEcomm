@@ -119,54 +119,93 @@ class ProductController extends Controller
     }
 
 
-    public function update($id, Request $request){
+    // public function update($id, Request $request){
 
-        $product = Product::find($id);
+    //     $product = Product::find($id);
 
-        if($product == null){
-            return response()->json([
-                'status' => 404,
-                'message' => 'Product Not Found',
-            ], 404);
-        }
+    //     if($product == null){
+    //         return response()->json([
+    //             'status' => 404,
+    //             'message' => 'Product Not Found',
+    //         ], 404);
+    //     }
 
-        $validator = Validator::make($request->all(),[
+    //     $validator = Validator::make($request->all(),[
+    //         'title' => 'required',
+    //         'price' => 'required|numeric',
+    //         'category' => 'required|integer',
+    //         'sku' => 'required|unique:products,sku,'.$id.',id',
+    //         'is_featured' => 'required',
+    //         'status' => 'required',
+    //     ]);
+
+    //     if($validator->fails()){
+    //         return response()->json([
+    //             'status' => 400,
+    //             'errors' => $validator->errors(),
+    //         ],400);
+    //     }
+
+
+    //     $product->title = $request->title;
+    //     $product->price = $request->price;
+    //     $product->compare_price = $request->compare_price;
+    //     $product->category_id = $request->category;
+    //     $product->brand_id = $request->brand;
+    //     $product->sku = $request->sku;
+    //     $product->qty = $request->qty;
+    //     $product->description = $request->description;
+    //     $product->short_description = $request->short_description;
+    //     $product->status = $request->status;
+    //     $product->is_featured = $request->is_featured;
+    //     $product->barcode = $request->barcode;
+    //     $product->save();
+
+    //     return response()->json([
+    //         'status' => 200,
+    //         'message' => 'Product Updated Successfully',
+    //     ], 200);
+    // }
+
+    public function update(Request $request, Product $product)
+    {
+    // Validation
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'price' => 'required|numeric',
             'category' => 'required|integer',
-            'sku' => 'required|unique:products,sku,'.$id.',id',
-            'is_featured' => 'required',
-            'status' => 'required',
+            'sku' => 'required|unique:products,sku,' . $product->id,
+            'is_featured' => 'required|boolean',
+            'status' => 'required|boolean',
         ]);
 
-        if($validator->fails()){
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->errors(),
-            ],400);
-        }
-
-
-        $product->title = $request->title;
-        $product->price = $request->price;
-        $product->compare_price = $request->compare_price;
-        $product->category_id = $request->category;
-        $product->brand_id = $request->brand;
-        $product->sku = $request->sku;
-        $product->qty = $request->qty;
-        $product->description = $request->description;
-        $product->short_description = $request->short_description;
-        $product->status = $request->status;
-        $product->is_featured = $request->is_featured;
-        $product->barcode = $request->barcode;
-        $product->save();
-
+    if ($validator->fails()) {
         return response()->json([
-            'status' => 200,
-            'message' => 'Product Updated Successfully',
-        ], 200);
+            'status' => 400,
+            'errors' => $validator->errors(),
+        ], 400);
     }
 
+    // Update product fields
+    $product->title = $request->title;
+    $product->price = $request->price;
+    $product->compare_price = $request->compare_price;
+    $product->category_id = $request->category;
+    $product->brand_id = $request->brand;
+    $product->sku = $request->sku;
+    $product->qty = $request->qty;
+    $product->description = $request->description;
+    $product->short_description = $request->short_description;
+    $product->status = $request->status;
+    $product->is_featured = $request->is_featured;
+    $product->barcode = $request->barcode;
+    $product->save();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Product Updated Successfully',
+    ], 200);
+}
 
     public function destroy($id){
         $product = Product::with('product_images')->find($id);
@@ -226,7 +265,7 @@ class ProductController extends Controller
         $img->coverDown(400,460);
         $img->save(public_path('uploads/temp/product/small/'.$imageName));
 
-       
+
         $productImage = new ProductImage();
         $productImage->image = $imageName;
         $productImage->product_id = $request->product_id;

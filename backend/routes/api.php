@@ -50,5 +50,4 @@ Route::middleware(['auth:api','checkAdminRole'])->group(function () {
     Route::get('orders',[AdminOrderController::class,'index']);
     Route::get('orders/{id}',[AdminOrderController::class,'detail']);
     Route::post('update-order/{id}',[AdminOrderController::class,'updateOrder']);
-
 });

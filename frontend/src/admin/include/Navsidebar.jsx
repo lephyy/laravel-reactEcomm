@@ -64,9 +64,6 @@ function Navsidebar () {
                 <span class="menu-title ml-4">Change Password</span>       
             </Link>
           </li>
-          
-          
-        
         </ul>
         </nav>
         </>

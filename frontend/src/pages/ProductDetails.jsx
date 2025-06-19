@@ -12,8 +12,9 @@ function ProductDetails() {
     const [productImages, setProductImages] = useState([])
     const [product, setProduct] = useState([])
     const params = useParams();
-    const { addToCart } = useContext(CartContext)
-
+    const { addToCart } = useContext(CartContext);
+    const [quantity, setQuantity] = useState(1);
+    const [showMessage, setShowMessage] = useState(false);
 
     const fetchProduct = () => {
             fetch(`${apiUrl}/get-product/${params.id}`,{
@@ -36,18 +37,10 @@ function ProductDetails() {
         }
 
     const handleAddToCart = () => {
-        // Prepare product with quantity for adding to cart
-        const productToAdd = {
-            ...product,
-            quantity: 1  // Default quantity of 1 when adding from product details
-        };
-        
-        // Call the addToCart function from CartContext
-        addToCart(productToAdd);
-        
-        // Optional: Show confirmation to user
-        alert("Product added to cart successfully!");
-    }
+        addToCart({ ...product, quantity });
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 2000); // Hide message after 2 seconds
+    };
 
     useEffect(() => {
         fetchProduct()
@@ -99,7 +92,24 @@ function ProductDetails() {
                                         Add to Cart
                                     </button>
                                     <a href="#" className="like_us"> <i className="ti-heart"></i> </a>
-                                    
+                                    {showMessage && (
+                                        <div
+                                            style={{
+                                                position: "fixed",
+                                                top: "50%",
+                                                left: "50%",
+                                                transform: "translate(-50%, -50%)",
+                                                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                                color: "white",
+                                                padding: "20px 40px",
+                                                borderRadius: "8px",
+                                                zIndex: 1000,
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            Added to shopping cart successfully!
+                                        </div>
+                                    )}
                                 </div>
 
                             </div>
